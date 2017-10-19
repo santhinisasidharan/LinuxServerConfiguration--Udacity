@@ -3,9 +3,9 @@ This is done as a part of 5th project in Udacity Full stack developer course.Her
 We are deploying Item catalog app from project 3.
 
 ## Project Info.
-IP ADDRESS:13.126.215.216
-SSH PORT: 2200
-LOGIN LINK :[Click here](http://13.126.215.216)
+- IP ADDRESS:13.126.215.216
+- SSH PORT: 2200
+- LOGIN LINK :[Click here](http://13.126.215.216)
 ## Get your server-
 1. Start a new Ubuntu Linux server instance on Amazon Lightsail.
 - Log in! - First, log in to Lightsail. If you don't already have an Amazon Web Services account, you'll be prompted to create one.
