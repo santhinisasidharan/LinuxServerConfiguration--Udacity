@@ -36,37 +36,37 @@ Make grader root user: `$ sudo chown -R grader:grader /home/grader/.ssh`.
 5. To enforce key based authentication `$ sudo nano /etc/ssh/sshd_config`. Find the *PasswordAuthentication* line and edit it to *no*.Then `$ sudo service ssh restart`.
 
 ## Change SSH port from 22 to 2200
-`$ sudo nano /etc/ssh/sshd_config`. 
-Find the *Port* line and edit it to *2200*.
-`$ sudo service ssh restart`.
-Log into the remote VM through ssh with the following command: `$ ssh grader@13.126.215.216 -i ~/.ssh/project_key.rsa -p 2200`.
+- `$ sudo nano /etc/ssh/sshd_config`. 
+- Find the *Port* line and edit it to *2200*.
+- `$ sudo service ssh restart`.
+- Log into the remote VM through ssh with the following command: `$ ssh grader@13.126.215.216 -i ~/.ssh/project_key.rsa -p 2200`.
 
 ## Disable ssh login for root user
-`$ sudo nano /etc/ssh/sshd_config`. 
-Find the *PermitRootLogin* line and edit it to *no*.
-`$ sudo service ssh restart`.
+- `$ sudo nano /etc/ssh/sshd_config`. 
+- Find the *PermitRootLogin* line and edit it to *no*.
+- `$ sudo service ssh restart`.
 
 ## Configure the Uncomplicated Firewall (UFW) to only allow incoming connections for SSH (port 2200), HTTP (port 80), and NTP (port 123).
-`$ sudo ufw allow 2200/tcp`.
-`$ sudo ufw allow 80/tcp`.
-`$ sudo ufw allow 123/udp`.
-`$ sudo ufw enable`.
+- `$ sudo ufw allow 2200/tcp`.
+- `$ sudo ufw allow 80/tcp`.
+- `$ sudo ufw allow 123/udp`.
+- `$ sudo ufw enable`.
 
 ## Install Apache, mod_wsgi- Mod_wsgi is an Apache HTTP server mod that enables Apache to serve Flask applications.
-`$ sudo apt-get install apache2`.
-`$ sudo apt-get install libapache2-mod-wsgi python-dev`.
-Enable *mod_wsgi*: `$ sudo a2enmod wsgi`.
-`$ sudo service apache2 start`.
+- `$ sudo apt-get install apache2`.
+- `$ sudo apt-get install libapache2-mod-wsgi python-dev`.
+- Enable *mod_wsgi*: `$ sudo a2enmod wsgi`.
+- `$ sudo service apache2 start`.
 
 ## Install git - configure username and mail
-`$ sudo apt-get install git`.
-`$ git config --global user.name <username>`.
-`$ git config --global user.email <email>`.
-To clone the Item Catalog app from github:
+- `$ sudo apt-get install git`.
+- `$ git config --global user.name <username>`.
+- `$ git config --global user.email <email>`.
+- To clone the Item Catalog app from github:
 `$ cd /var/www`. Then: `$ sudo mkdir catalog`.
-Make grader owner for the catalog folder: `$ sudo chown -R grader:grader catalog`.
-Move inside that newly created folder: `$ cd /catalog` and clone the catalog repository from Github: `$ git clone https://github.com/santhinisasidharan/P5-Item-Catalog.git catalog`
- Make a *catalog.wsgi* file to serve the application over the *mod_wsgi*. That file should look like this:
+- Make grader owner for the catalog folder: `$ sudo chown -R grader:grader catalog`.
+- Move inside that newly created folder: `$ cd /catalog` and clone the catalog repository from Github: `$ git clone https://github.com/santhinisasidharan/P5-Item-Catalog.git catalog`
+ - Make a *catalog.wsgi* file to serve the application over the *mod_wsgi*. That file should look like this:
  ```python
 import sys
 import logging
@@ -75,15 +75,15 @@ sys.path.insert(0, "/var/www/catalog/")
 
 from catalog import app as application
 ```
- To deploy the catalog app, so I made a *deployment* branch which slightly differs from the *master*. Move inside the repository, `$ cd /var/www/catalog/catalog` and change branch with: `$ git checkout deployment`.
+-  To deploy the catalog app, so I made a *deployment* branch which slightly differs from the *master*. Move inside the repository, `$ cd /var/www/catalog/catalog` and change branch with: `$ git checkout deployment`.
 
 ## Install virtual environment and flask
-Install virtualenv `$ sudo pip install virtualenv`.
-Move to the *catalog* folder: `$ cd /var/www/catalog`. Then create a new virtual environment with the following command: `$ sudo virtualenv venv`.
-Activate the virtual environment: `$ source venv/bin/activate`.
-Change permissions to the virtual environment folder: `$ sudo chmod -R 777 venv`.
-Install Flask: `$ pip install Flask`.
-Install all the other project's dependencies: `$ pip install bleach httplib2 request oauth2client sqlalchemy python-psycopg2`.
+- Install virtualenv `$ sudo pip install virtualenv`.
+- Move to the *catalog* folder: `$ cd /var/www/catalog`. Then create a new virtual environment with the following command: `$ sudo virtualenv venv`.
+- Activate the virtual environment: `$ source venv/bin/activate`.
+- Change permissions to the virtual environment folder: `$ sudo chmod -R 777 venv`.
+- Install Flask: `$ pip install Flask`.
+- Install all the other project's dependencies: `$ pip install bleach httplib2 request oauth2client sqlalchemy python-psycopg2`.
 
 ## Configure and enable virtual host
 
@@ -110,24 +110,24 @@ Create a virtual host config file and paste in the following lines of code:: `$ 
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
-Enable the new virtual host: `$ sudo a2ensite catalog`.
+- Enable the new virtual host: `$ sudo a2ensite catalog`.
 
 ## Install and configure PostgreSQL
 `$ sudo apt-get install libpq-dev python-dev`.
 `$ sudo apt-get install postgresql postgresql-contrib`.
-Postgres automatically creates a new user during its installation, whose name is 'postgres'.Let's change the user with: `$ sudo su - postgres`, then connect to the database system with `$ psql`.
-Create a new user called 'catalog' with password: `# CREATE USER catalog WITH PASSWORD 'hello123';`
-Give *catalog* user the CREATEDB capability: `# ALTER USER catalog CREATEDB;`.
-Create the 'catalog' database owned by *catalog* user: `# CREATE DATABASE catalog WITH OWNER catalog;`.
-Connect to the database: `# \c catalog`.
-Inside the Flask application, the database connection is now performed with: 
+- Postgres automatically creates a new user during its installation, whose name is 'postgres'.Let's change the user with: `$ sudo su - postgres`, then connect to the database system with `$ psql`.
+- Create a new user called 'catalog' with password: `# CREATE USER catalog WITH PASSWORD 'hello123';`
+- Give *catalog* user the CREATEDB capability: `# ALTER USER catalog CREATEDB;`.
+- Create the 'catalog' database owned by *catalog* user: `# CREATE DATABASE catalog WITH OWNER catalog;`.
+- Connect to the database: `# \c catalog`.
+- Inside the Flask application, the database connection is now performed with: 
 ```python
 engine = create_engine('postgresql://catalog:hello123@localhost/catalog')
 ```
-Setup the database with: `$ python /var/www/catalog/catalog/database_setup.py`.
+- Setup the database with: `$ python /var/www/catalog/catalog/database_setup.py`.
 
 ## Update OAuth authorized JavaScript origins
-Add http://13.126.215.216
+- Add http://13.126.215.216
 
 ## Restart Apache to launch the app
 `$ sudo service apache2 restart`.
