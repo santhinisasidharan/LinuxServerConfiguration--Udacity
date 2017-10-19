@@ -19,7 +19,7 @@ We are deploying Item catalog app from project 3.
 1. Log into the remote VM as root user .
 2. Add a new user called grader.
 3. Create a new file under the suoders directory . Fill that newly created file with the following line of text: "grader ALL=(ALL:ALL) ALL", then save it.  
-- `$ ssh root@13.126.215.216`
+- `$ ssh ubuntu@13.126.215.216`
 - `$ sudo adduser grader`
 - `$ sudo nano /etc/sudoers.d/grader`
 ## Update all installed packages
@@ -30,7 +30,7 @@ We are deploying Item catalog app from project 3.
 ## key based authentication enabled for grader user
 1. Generate key on your local machine. with: `$ ssh-keygen -f ~/.ssh/project_key.rsa`.
 2. Log into the remote VM as root user through ssh and create file: `$ touch /home/grader/.ssh/authorized_keys`.
-3. Copy the content of the udacity_key.pub file from your local machine to the /home/grader/.ssh/authorized_keys file you just created on the remote VM. Then change some permissions:
+3. Copy the content of the project_key.pub file from your local machine to the /home/grader/.ssh/authorized_keys file you just created on the remote VM. Then change some permissions:
 - `$ sudo chmod 700 /home/grader/.ssh`.
 - `$ sudo chmod 644 /home/grader/.ssh/authorized_keys`.
 Make grader root user: `$ sudo chown -R grader:grader /home/grader/.ssh`.
