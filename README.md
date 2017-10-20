@@ -54,6 +54,9 @@ Make grader root user: `$ sudo chown -R grader:grader /home/grader/.ssh`.
 - `$ sudo ufw allow 123/udp`.
 - `$ sudo ufw enable`.
 
+## Configure to automatically manage package updates
+- Install unattended-upgrades if not already installed: $ sudo apt-get install unattended-upgrades.
+- To enable it, do: $ sudo dpkg-reconfigure --priority=low unattended-upgrades.
 ## Install Apache, mod_wsgi- Mod_wsgi is an Apache HTTP server mod that enables Apache to serve Flask applications.
 - `$ sudo apt-get install apache2`.
 - `$ sudo apt-get install libapache2-mod-wsgi python-dev`.
@@ -134,3 +137,8 @@ engine = create_engine('postgresql://catalog:hello123@localhost/catalog')
 ## Restart Apache to launch the app
 `$ sudo service apache2 restart`.
 
+## Sources:
+- [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps).
+- https://github.com/stueken/FSND-P5_Linux-Server-Configuration
+- https://help.ubuntu.com/community/UbuntuTime#Using_the_Command_Line_.28terminal.29
+- https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html
